@@ -68,15 +68,14 @@ namespace Project_1
 
         static void Main(string[] args)
         {
+            // Choosing an account number, and then opening the right path for the code to use
             int i = Menus.ChoicePicker(new List<string>() { "Account 1","Account 2","Account 3"}, "Please choose which account to open");
-            string path = "";
-            // Base variables used
+            string path;
             if (i == 1) { path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "List.txt"); }
             else if (i == 2) { path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lists_2.txt"); }
             else { path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lists_3.txt"); }
 
             // Inputs the examples if they do not yet exist
-            // Delete temporary files just in case they somehow exist
             if (!File.Exists(path)) { Save(path, 500000); }
 
             // Variables used in code below

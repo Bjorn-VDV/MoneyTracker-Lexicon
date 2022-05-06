@@ -55,7 +55,7 @@ namespace Project_1
                 else { itemTitle = item.Title; }
                 choiceList.Add(itemTitle.PadRight(15) + item.Amount.ToString().PadRight(15) + item.DateString);
 
-                // Fill in an array with each result's position
+                // Fill in an array with each result's position, in case person searches by input string instead of the entire list
                 if (i == 2)
                 {
                     listNrHolder[listNrHolderCounter] = iTemp;
@@ -69,10 +69,10 @@ namespace Project_1
             // Making sure there are no duplicates
             if (iTemp == 2)
             {
-                // i is now the position within the temporary array that had saved the item's position in the Entire List
+                // changing i into the original list's position number
                 i = listNrHolder[i];
 
-                // Finding its index in the original list using an exact comparison of the choice into the original list
+                // Finding its index in the original list using an exact comparison of the choice into the original list. This avoids accidental duplication
                 i = entireList.FindIndex(a => a.Title == entireList[i].Title && a.Amount == entireList[i].Amount && a.DateString == entireList[i].DateString);
             }
 
@@ -87,7 +87,7 @@ namespace Project_1
                 return currCash;
             }
 
-            // Remove item prompt for certainty
+            // Remove item prompt for certainty, and then actual removal
             else
             {
                 Colouriser.ColourMaker($"\nWARNING: Are you sure you want to delete \"{entireList[i].Title}\"? Doing so will automatically save any changes.\nWrite Y/N\n", true);

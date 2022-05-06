@@ -71,7 +71,7 @@ namespace Project_1
                 foreach (Items item in entireList) { if (item.Amount >= 0) outputList.Add(item); }
             }
 
-
+            // Sorting list based on choice of the person
             int i = Menus.ChoicePicker(options, "How would you like to sort your list?");
             switch (i)
             {
@@ -93,6 +93,8 @@ namespace Project_1
 
             };
             Console.Clear();
+
+            // Outputting the list. If the title of the item is too big, we limit its length for readability reasons.
             foreach (Items item in outputList)
             {
                 string itemTitle;

@@ -56,7 +56,7 @@ namespace Project_1
 
         public static (int, int) ShowMenu(int currCash)
         {
-            // Creating menu and submenu lists. Also taking in current money.            
+            // Creating menu and submenu lists. Also taking in current money to show at the top.        
             List<string> optionsMain = new List<string>
             {
                 "Show items (All/Expense(s)/Income(s))",
@@ -78,6 +78,9 @@ namespace Project_1
             };
 
             // Choice picker using list up there. Return the value chosen.
+            // We are also inserting a comma into the cash by converting it to a string.
+            // ==> I started with floats and doubles, but learned they are not accurate. Instead I multiply
+            //     every cash income by 100, and then add a comma afterwards. This keeps values after the comma accurate!
             int i = ChoicePicker(optionsMain, $"Welcome to TrackMoney!\nYou currently have {currCash.ToString().Insert(currCash.ToString().Length - 2, ",")} SEK on your account.\nPick an option:\n");
 
             // Depending on choice, go to submenu below

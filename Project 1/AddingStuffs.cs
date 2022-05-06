@@ -24,7 +24,7 @@ namespace Project_1
             // Variables used in loop
             bool leave;
             string input;
-            int itemPrice, year, month, day, expInc;
+            int itemPrice, expInc;
             DateTime itemDate;
 
             // Loop for making new items
@@ -56,11 +56,25 @@ namespace Project_1
                         Colouriser.ColourMaker("This is not a valid number\n", true);
                     }
                     itemPrice = Convert.ToInt32(doublePrice * 100);
-                    if (expInc == 1 && itemPrice >= 0) { itemPrice = -itemPrice; leave = true; }
+
+                    // Converting positive to negative if expense.
+                    // Then making sure you're not adding a negative instead of a positive for income
+                    // If price is zero, we ask if this is correct
+                    if (expInc == 1 && itemPrice > 0) { itemPrice = -itemPrice; leave = true; }
                     else if (expInc == 2 && itemPrice < 0) { Colouriser.ColourMaker("You are adding an income, not an expense\n", true); }
+                    else if (itemPrice == 0)
+                    {
+                        Colouriser.ColourMaker("Your input resulted a price of '0'. Is this correct? Y/N", true);
+                        ConsoleKeyInfo answer = Console.ReadKey();
+                        if (answer.Key == ConsoleKey.Y) leave = true;
+                        else leave = false;
+                    }
                     else leave = true;
                 }
                 while (leave == false);
+
+                // Making itemprice a string. Doing this here to avoid repetition
+                string itemPriceString = itemPrice == 0 ? "0,00" : itemPrice.ToString().Insert(itemPrice.ToString().Length - 2, ",");
 
                 // Getting a date. Prompt if made today or not. If no, go to line 135
                 int i = Menus.ChoicePicker(yesNo, "Was this transaction today?");
@@ -74,69 +88,26 @@ namespace Project_1
                     Console.Clear();
                     Console.WriteLine($"Please add a name: {itemName}\nPlease add a price: {itemPrice}");
 
-                    // Get the year
+                    // Get the date from user input
                     leave = false;
                     do
                     {
-                        Console.Write("Please input a year in 'yyyy' format: ");
+                        Console.Write("Please input a date in 'yyyy-MM-dd' format: ");
                         input = Console.ReadLine();
-                        if (!int.TryParse(input, out year))
+                        if (!DateTime.TryParse(input, out itemDate))
                         {
-                            Colouriser.ColourMaker("This is not a valid number\n", true);
-                        }
-                        if (year > 9999 || year < 1000)
-                        {
-                            Colouriser.ColourMaker("Please use the 'yyyy' format\n", true);
+                            Colouriser.ColourMaker("Please use the 'yyyy-MM-dd' format\n", true);
                         }
                         else { leave = true; }
                     }
                     while (leave == false);
-
-                    // Get the month
-                    leave = false;
-                    do
-                    {
-                        Console.Write("Please input a month in 'MM' format: ");
-                        input = Console.ReadLine();
-                        if (!int.TryParse(input, out month))
-                        {
-                            Colouriser.ColourMaker("This is not a valid number\n", true);
-                        }
-                        if (month > 12 || month < 1)
-                        {
-                            Colouriser.ColourMaker("Please use the 'MM' format\n", true);
-                        }
-                        else { leave = true; }
-                    }
-                    while (leave == false);
-
-                    // Get the day
-                    leave = false;
-                    do
-                    {
-                        Console.Write("Please input a day in 'dd' format: ");
-                        input = Console.ReadLine();
-                        if (!int.TryParse(input, out day))
-                        {
-                            Colouriser.ColourMaker("This is not a valid number\n", true);
-                        }
-                        if (day > 31 || day < 1)
-                        {
-                            Colouriser.ColourMaker("Please use the 'dd' format\n", true);
-                        }
-                        else { leave = true; }
-                    }
-                    while (leave == false);
-
-                    // Make inputs a datetime
-                    itemDate = new DateTime(year, month, day);
                 }
 
                 // Check for if adding or editing if i== -1, it means we did NOT take an input to replace
                 if (replacer == -1)
                 {
                     // Adding the newly created item to the list
-                    i = Menus.ChoicePicker(yesNo, $"You are adding {itemName}, priced at {itemPrice.ToString().Insert(itemPrice.ToString().Length - 2, ",")}, transaction made {itemDate}. \n\nIs this correct?\n");
+                    i = Menus.ChoicePicker(yesNo, $"You are adding {itemName}, priced at {itemPriceString}, transaction made {itemDate}. \n\nIs this correct?\n");
                     if (i == 1)
                     {
                         addItems.Add(new Items(itemName, itemPrice, itemDate));
@@ -154,7 +125,7 @@ namespace Project_1
                 {
                     // EDITING newly created item with old one, prompt
                     i = Menus.ChoicePicker(yesNo, $"You are replacing {unsavedItems[replacer].Title}, priced at {unsavedItems[replacer].Amount}, transaction made {unsavedItems[replacer].DateString}" +
-                        $"\nFor the following:\n{itemName}, priced at {itemPrice.ToString().Insert(itemPrice.ToString().Length - 2, ",")}, transaction made {itemDate}. \n\nIs this correct?\n");
+                        $"\nFor the following:\n{itemName}, priced at {itemPriceString}, transaction made {itemDate}. \n\nIs this correct?\n");
                     if (i == 1)
                     {
                         int tempChange = unsavedItems[replacer].Amount;
