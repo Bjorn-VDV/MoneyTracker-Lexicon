@@ -74,7 +74,7 @@ namespace Project_1
                 while (leave == false);
 
                 // Making itemprice a string. Doing this here to avoid repetition
-                string itemPriceString = itemPrice == 0 ? "0,00" : itemPrice.ToString().Insert(itemPrice.ToString().Length - 2, ",");
+                string itemPriceString = itemPrice == 0 ? "0,00" : (itemPrice/100).ToString("n2");
 
                 // Getting a date. Prompt if made today or not. If no, go to line 135
                 int i = Menus.ChoicePicker(yesNo, "Was this transaction today?");

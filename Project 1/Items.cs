@@ -100,7 +100,7 @@ namespace Project_1
                 string itemTitle;
                 if (item.Title.Length > 14) { itemTitle = item.Title[..14]; }
                 else { itemTitle = item.Title; }
-                string itemAmountString = item.Amount.ToString().Insert(item.Amount.ToString().Length -2, ",");
+                string itemAmountString = (item.Amount / 100).ToString("n2");
                 Console.WriteLine(itemTitle.PadRight(15) + string.Format("{0,11}",itemAmountString).PadRight(15) + item.DateString);
             }
             Colouriser.ColourMaker("Press enter to go back to the main menu.", false, 14);
